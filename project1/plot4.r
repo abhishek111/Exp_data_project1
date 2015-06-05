@@ -1,0 +1,22 @@
+plot4<-function(){
+  data<-read.table("hpc.txt",sep=";",header=T,na.strings="?")
+  data[,1]=as.Date(data[,1],format="%d/%m/%Y")
+  data6<-filter(data,Date=="2007-02-01"|Date=="2007-02-02")
+  datetime=paste(data6$Date,data6$Time)
+  data6=cbind(data6,datetime)
+  png("plot4.png",width=480,height=480)
+  par(mfrow=c(2,2))
+  plot(data6$Global_active_power,type="l",xaxt="n",ylab = "Global Active Power",xlab="")
+  axis(1,at=c(0,1460,2880),labels=c("Thu","Fri","Sat"))
+  plot(data6$Voltage,type="l",xaxt="n",ylab = "Voltage",xlab="datetime")
+  axis(1,at=c(0,1460,2880),labels=c("Thu","Fri","Sat"))
+  plot(data6$Sub_metering_1,type="l",ylab="Energy sub metering",xlab="",xaxt="n",col="black")
+  lines(data6$Sub_metering_2,type="l",col="red")
+  lines(data6$Sub_metering_3,type="l",col="blue")
+  axis(1,at=c(0,1460,2880),labels=c("Thu","Fri","Sat"))
+  legend("topright",c("Sub_metering_1","Sub_metering_2","Sub_metering_3"),
+         col=c("black","red","blue"),lty=c(1,1))
+  plot(data6$Global_reactive_power,type="l",xaxt="n",ylab = "Global reactive Power",xlab="datetime")
+  axis(1,at=c(0,1460,2880),labels=c("Thu","Fri","Sat"))
+  
+  dev.off()
